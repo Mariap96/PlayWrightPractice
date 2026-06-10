@@ -5,5 +5,6 @@
 
 > npx playwright test --grep "nombre test" --project="chromium" --headed
 
-** Headed nos permite abrir el browser 
-** project nos permite indicar por medio de que browser 
+-- Headed nos permite abrir el browser 
+
+-- project nos permite indicar por medio de que browser 
