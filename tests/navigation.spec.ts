@@ -1,15 +1,12 @@
 import {expect, test} from "@playwright/test";
-
-const URL_BASE = "https://opensource-demo.orangehrmlive.com";
+import {LoginPage} from "../pageobjects/loginPage";
 
 
 test("Check left menu options", async({page})=>{
 
     // LOGIN
-    await page.goto(URL_BASE);
-    await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-    await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-    await page.getByRole("button", { name: "Login" }).click();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin("Admin", "admin123");
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole("listitem")
@@ -44,10 +41,8 @@ test("Check left menu options", async({page})=>{
 
 test("Navigate to the left panel", async({page})=>{
     // LOGIN
-    await page.goto(URL_BASE);
-    await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-    await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-    await page.getByRole("button", { name: "Login" }).click();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin("Admin", "admin123");
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     // LEFT MENU
@@ -97,10 +92,8 @@ test("Check all the qualification links", async({page})=>{
     ]
 
     // LOGIN
-    await page.goto(URL_BASE);
-    await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-    await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-    await page.getByRole("button", { name: "Login" }).click();
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin("Admin", "admin123");
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     await page.getByRole("link", { name: "Admin" }).click();
@@ -144,10 +137,9 @@ test("Check all the job links", async({page})=>{
     ]
 
     // LOGIN
-    await page.goto(URL_BASE);
-    await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-    await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-    await page.getByRole("button", { name: "Login" }).click();
+    // LOGIN
+    const loginPage = new LoginPage(page);
+    await loginPage.doLogin("Admin", "admin123");
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     await page.getByRole("link", { name: "Admin" }).click();

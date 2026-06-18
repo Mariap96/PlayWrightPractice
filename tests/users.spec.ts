@@ -1,18 +1,15 @@
 import { expect, test } from "@playwright/test";
-
-const URL_BASE = "https://opensource-demo.orangehrmlive.com";
+import {LoginPage} from "../pageobjects/loginPage";
 
 test("Get all the usernames registered", async ({ page }) => {
-  // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin", "admin123");
 
-  // Aserción
+  // Assertion
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
-  await page.getByRole("link", { name: "Admin" }).click()
+  await page.getByRole("link", { name: "Admin" }).click();
 
   await page
     .getByRole("navigation", { name: "Topbar Menu" })
@@ -37,11 +34,9 @@ test("Get all the usernames registered", async ({ page }) => {
 });
 
 test("Get all the employee names registered", async ({ page }) => {
-  // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin", "admin123")
 
   // Aserción
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
@@ -72,10 +67,9 @@ test("Get all the employee names registered", async ({ page }) => {
 
 test("Select specific user for edition", async ({ page }) => {
 
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin", "admin123")
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
   await page.getByRole("link", { name: "Admin" }).click()
@@ -118,8 +112,6 @@ test("Select specific user for edition", async ({ page }) => {
   const currentUserName= await page.locator("//label[text()='Username'] /parent::div/following-sibling::div/input").inputValue()
 
   expect(currentUserName).toEqual(userForEdition);
-
-
 
 })
 

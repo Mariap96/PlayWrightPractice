@@ -1,24 +1,20 @@
 import { expect, test } from "@playwright/test";
+import {LoginPage} from "../pageobjects/loginPage";
 
-const URL_BASE = "https://opensource-demo.orangehrmlive.com";
 
 test("Login to HRM", async ({ page }) => {
-  // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin", "admin123");
 
   // Aserción
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 });
 
 test("Login to HRM with invalid username", async ({ page }) => {
-  // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin1");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin123");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin123", "admin123");
 
   //Aserción
   await expect(
@@ -30,11 +26,9 @@ test("Login to HRM with invalid username", async ({ page }) => {
 });
 
 test("Login to HRM with invalid password", async ({ page }) => {
-  // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
-  await page.getByRole("textbox", { name: "Username" }).fill("Admin");
-  await page.getByRole("textbox", { name: "Password" }).fill("admin1234");
-  await page.getByRole("button", { name: "Login" }).click();
+  // LOGIN
+  const loginPage = new LoginPage(page);
+  await loginPage.doLogin("Admin", "admin");
 
   //Aserción
   await expect(
@@ -49,7 +43,7 @@ test("Login to HRM where you do not send user and password", async ({
   page,
 }) => {
   // Mapeo e interacción con los elementos
-  await page.goto(URL_BASE);
+  await page.goto('');
   await page.getByRole("button", { name: "Login" }).click();
 
   //Aserción
