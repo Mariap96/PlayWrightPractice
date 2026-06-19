@@ -3,17 +3,15 @@ import {expect, Locator, Page} from "@playwright/test";
 export class SidePanel {
 
     readonly page:Page
+    readonly searchTextBox:Locator
 
     constructor(page:Page) {
         this.page = page;
+        this.searchTextBox = page.getByRole("textbox", {name: 'Search'})
     }
 
     private menuOption(option:SideMenuOptions):Locator{
         return this.page.getByRole("link", { name: option })
-    }
-
-    private searchTextbox():Locator{
-        return this.page.getByRole("textbox", {name: 'Search'})
     }
 
     async clickOnSideBarOption(option:SideMenuOptions){
@@ -25,8 +23,8 @@ export class SidePanel {
     }
 
     async searchOption(value:string){
-        await this.searchTextbox().click()
-        await this.searchTextbox().fill(value)
+        await this.searchTextBox.click()
+        await this.searchTextBox.fill(value)
     }
 
 }
