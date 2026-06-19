@@ -1,14 +1,22 @@
 import { expect, test } from "@playwright/test";
 import {LoginPage} from "../pageobjects/loginPage";
+import {SideMenuOptions, SidePanel} from "../components/SidePanel";
 
 
 test("Login to HRM", async ({ page }) => {
-  // LOGIN
+
+  // Constructores
   const loginPage = new LoginPage(page);
+  const sidePanel = new SidePanel(page);
+
+  // LOGIN
   await loginPage.doLogin("Admin", "admin123");
 
   // Aserción
-  await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
+  await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN)
+
+  await sidePanel.searchOption("Aqui Toy")
+
 });
 
 test("Login to HRM with invalid username", async ({ page }) => {

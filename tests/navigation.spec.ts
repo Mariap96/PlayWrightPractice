@@ -1,5 +1,6 @@
 import {expect, test} from "@playwright/test";
 import {LoginPage} from "../pageobjects/loginPage";
+import {SideMenuOptions, SidePanel} from "../components/SidePanel";
 
 
 test("Check left menu options", async({page})=>{
@@ -91,12 +92,15 @@ test("Check all the qualification links", async({page})=>{
         }
     ]
 
-    // LOGIN
+    //Constantes
     const loginPage = new LoginPage(page);
-    await loginPage.doLogin("Admin", "admin123");
-    await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
+    const sidePanel = new SidePanel(page);
 
-    await page.getByRole("link", { name: "Admin" }).click();
+    //Login
+    await loginPage.doLogin("Admin", "admin123");
+    await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN);
+
+    await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN);
     await page.getByRole("navigation", { name: "Topbar Menu" }).getByText("Qualifications").click();
 
     const qualificationOptions = page.getByRole("menu").locator('li')
@@ -136,13 +140,15 @@ test("Check all the job links", async({page})=>{
         }
     ]
 
-    // LOGIN
-    // LOGIN
+    //Constantes
     const loginPage = new LoginPage(page);
-    await loginPage.doLogin("Admin", "admin123");
-    await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
+    const sidePanel = new SidePanel(page);
 
-    await page.getByRole("link", { name: "Admin" }).click();
+    //Login
+    await loginPage.doLogin("Admin", "admin123");
+    await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN);
+
+    await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN);
     await page.getByRole("navigation", { name: "Topbar Menu" }).getByText("Job").click();
 
     const jobOptions = page.getByRole("menu").locator('li')
