@@ -4,7 +4,7 @@ import {LoginPage} from "../pageobjects/loginPage";
 test("Get all the usernames registered", async ({ page }) => {
   // LOGIN
   const loginPage = new LoginPage(page);
-  await loginPage.doLogin("Admin", "admin123");
+  await loginPage.loginAsAdmin();
 
   // Assertion
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
@@ -36,7 +36,7 @@ test("Get all the usernames registered", async ({ page }) => {
 test("Get all the employee names registered", async ({ page }) => {
   // LOGIN
   const loginPage = new LoginPage(page);
-  await loginPage.doLogin("Admin", "admin123")
+  await loginPage.loginAsAdmin();
 
   // Aserción
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
@@ -69,7 +69,7 @@ test("Select specific user for edition", async ({ page }) => {
 
   // LOGIN
   const loginPage = new LoginPage(page);
-  await loginPage.doLogin("Admin", "admin123")
+  await loginPage.loginAsAdmin();
   await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
   await page.getByRole("link", { name: "Admin" }).click()

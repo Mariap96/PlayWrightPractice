@@ -3,19 +3,33 @@ import {LoginPage} from "../pageobjects/loginPage";
 import {SideMenuOptions, SidePanel} from "../components/SidePanel";
 
 
-test("Login to HRM", async ({ page }) => {
+test("Login to HRM with Admin", async ({ page }) => {
 
   // Constructores
   const loginPage = new LoginPage(page);
   const sidePanel = new SidePanel(page);
 
   // LOGIN
-  await loginPage.doLogin("Admin", "admin123");
+  await loginPage.loginAsAdmin();
 
   // Aserción
   await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN)
 
   await sidePanel.searchOption("Aqui Toy")
+
+});
+
+test("Login to HRM with ESS", async ({ page }) => {
+
+  // Constructores
+  const loginPage = new LoginPage(page);
+  const sidePanel = new SidePanel(page);
+
+  // LOGIN
+  await loginPage.loginAsESS();
+
+  // Aserción
+  await expect(page.getByRole("link", { name: 'Admin' })).not.toBeVisible()
 
 });
 

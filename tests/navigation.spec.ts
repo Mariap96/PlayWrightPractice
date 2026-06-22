@@ -7,7 +7,7 @@ test("Check left menu options", async({page})=>{
 
     // LOGIN
     const loginPage = new LoginPage(page);
-    await loginPage.doLogin("Admin", "admin123");
+    await loginPage.loginAsAdmin();
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     const leftMenuItems = page.getByLabel('Sidepanel').getByRole("listitem")
@@ -43,7 +43,7 @@ test("Check left menu options", async({page})=>{
 test("Navigate to the left panel", async({page})=>{
     // LOGIN
     const loginPage = new LoginPage(page);
-    await loginPage.doLogin("Admin", "admin123");
+    await loginPage.loginAsAdmin();
     await expect(page.getByRole("link", { name: "Admin" })).toBeVisible();
 
     // LEFT MENU
@@ -97,7 +97,7 @@ test("Check all the qualification links", async({page})=>{
     const sidePanel = new SidePanel(page);
 
     //Login
-    await loginPage.doLogin("Admin", "admin123");
+    await loginPage.loginAsAdmin();
     await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN);
 
     await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN);
@@ -145,7 +145,7 @@ test("Check all the job links", async({page})=>{
     const sidePanel = new SidePanel(page);
 
     //Login
-    await loginPage.doLogin("Admin", "admin123");
+    await loginPage.loginAsAdmin();
     await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN);
 
     await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN);
