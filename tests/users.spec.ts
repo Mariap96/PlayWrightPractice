@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import {LoginPage} from "../pageobjects/loginPage";
 import {SideMenuOptions, SidePanel} from "../components/SidePanel";
-import {labelOptions, User} from "../pageobjects/userPage";
+import {labelOptions, User, UserRoleOptions} from "../pageobjects/userPage";
 
 test("Get all the usernames registered", async ({ page }) => {
   // LOGIN
@@ -129,7 +129,7 @@ test('check user role options', async ({ page }) => {
   await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN)
 
   const userPage = new User(page);
-  await userPage.clickOnDropdown(labelOptions.USER_ROLE)
+  await userPage.clickOnUserLabels(labelOptions.USER_ROLE)
 
   const currentRoleOptions = await userPage.getAllDropdownOptions()
 
@@ -150,13 +150,48 @@ test('check status options', async ({ page }) => {
   await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN)
 
   const userPage = new User(page);
-  await userPage.clickOnDropdown(labelOptions.STATUS)
+  await userPage.clickOnUserLabels(labelOptions.STATUS)
 
   const currentStatusOptions = await userPage.getAllDropdownOptions()
 
   console.log(currentStatusOptions);
 
   expect(currentStatusOptions,'The options displayed in the User Role Dropdown do not match the expected option').toEqual(expectedStatusOptions);
+
+})
+
+
+
+test ('filter than user admin', async ({ page }) => {
+
+  const loginPage = new LoginPage(page);
+  await loginPage.loginAsAdmin();
+
+  const sidePanel = new SidePanel(page);
+  await sidePanel.clickOnSideBarOption(SideMenuOptions.ADMIN)
+
+  const allBodyRows = page.getByRole("table").getByRole('rowgroup').nth(1).getByRole("row");
+
+  // Filas que contiene el role admin
+  const currentAdminRoles = allBodyRows.filter({
+        has: page.getByRole('cell').nth(2).getByText('Admin')
+      })
+
+  const expectedAdminCount = await currentAdminRoles.count();
+  console.log('Admin users before filtering',expectedAdminCount);
+
+  const userPage = new User(page);
+  await userPage.clickOnUserLabels(labelOptions.USER_ROLE);
+  await userPage.chooseOptionDropDown(UserRoleOptions.ADMIN);
+  await userPage.clickOnSearch();
+
+  // Tabla filtrada deberia tener exactamennte la misma cantidad que encontramos antes
+  await expect(allBodyRows).toHaveCount(expectedAdminCount);
+
+  for(let i=0; i<expectedAdminCount;i++){
+    await expect(allBodyRows.nth(i).getByRole('cell').nth(2)).toContainText('Admin');
+  }
+
 
 })
 

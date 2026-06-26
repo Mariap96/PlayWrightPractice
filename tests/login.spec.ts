@@ -6,11 +6,9 @@ import {SideMenuOptions, SidePanel} from "../components/SidePanel";
 test("Login to HRM with Admin", async ({ page }) => {
 
   // Constructores
-  const loginPage = new LoginPage(page);
   const sidePanel = new SidePanel(page);
 
-  // LOGIN
-  await loginPage.loginAsAdmin();
+  await page.goto('/web/index.php/dashboard/index')
 
   // Aserción
   await sidePanel.validateSideBarOption(SideMenuOptions.ADMIN)
