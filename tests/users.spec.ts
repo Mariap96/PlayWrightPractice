@@ -195,3 +195,55 @@ test ('filter than user admin', async ({ page }) => {
 
 })
 
+test('capture all amounts', async ({ page }) => {
+  await page.goto('/web/index.php/claim/viewAssignClaim')
+  const allBodyRows = page.getByRole("table").getByRole('rowgroup').nth(1).getByRole("row");
+  const amounts: number[] = []
+  const rowCount = await allBodyRows.count()
+  console.log('Number of rows ',rowCount)
+
+  for (let i=0; i<rowCount;i++){
+    const amountCell = allBodyRows.nth(i).getByRole('cell').nth(7)
+    const amountText = await amountCell.textContent()
+    console.log('This is the amount in the text', amountText)
+    if (amountText === null) {
+      continue
+    }
+    const convertedNumber= parseFloat((amountText)?.replace(/,/g, '').trim())
+    amounts.push(convertedNumber)
+  }
+  console.log(amounts)
+  let total = 0
+
+  for (let amount of amounts) {
+    total +=amount
+  }
+  console.log('Total is: ', total )
+
+  let  average = total / amounts.length;
+
+  console.log('The average is ',average)
+
+  let greaterValue = 0
+
+  for (let i = 0; i < amounts.length; i++) {
+    const amount = amounts[i];
+    if (amounts[i] > greaterValue) {
+      greaterValue = amount;
+    }
+  }
+
+  console.log('The greater value is: ', greaterValue)
+
+  let lessValue = amounts[0]
+  for (let i = 0; i < amounts.length; i++) {
+    const amount = amounts[i];
+    if (amounts[i] < lessValue ) {
+      lessValue = amount;
+    }
+  }
+
+  console.log('The less value is: ', lessValue)
+
+
+})
